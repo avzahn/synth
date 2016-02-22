@@ -21,7 +21,7 @@ class note(object):
 		self.t = np.linspace(0,duration,samplerate*duration)
 		
 
-class partial(object):
+class amfm(object):
 	"""
 	An abstract representation of a simultaneously amplitude,
 	frequency, and phase modulated oscillator.
@@ -74,6 +74,28 @@ class partial(object):
 		"""
 		return waveform
 
+class shaped_noise(object):
+
+	def __init__(self, centers, amplitude, note):
+
+		n = int(note.duration * note.samplerate)
+
+		transfer_function = np.zeros(n)
+
+		s = np.min(np.diff(np.sort(centers))) / 2.0
+
+		fr = np.fft.fftfreq(n)
+
+		self.response = np.copy(fr)
+
+		for c in centers:
+			self.response  += np.exp( (0.5/s**2)*(abs(fr)-c)**2 )
+
+		self.noise = np.random.normal(loc=0,scale=amplitude,size=(n,))
+
+	def run(self):
+
+		return np.real(np.fft.ifft(self.noise*self.response))
 
 class synthesizer(object):
 

@@ -1,7 +1,7 @@
 import random
 from synthesis import *
 
-class simple_partial(partial):
+class simple_amfm(amfm):
 
 	def model(self,center,amplitude,note):
 
@@ -60,10 +60,10 @@ class simple_synth(synthesizer):
 		centers = note.f * np.array([0.8,1.0,1.5,2.0,3.0,4.0,5.0])
 		amplitudes = note.a * np.array([0.2,1.0,0.3,0.3,0.6,0.6,0.1])
 
-		waveform = simple_partial(centers[0],amplitudes[0],note).run()
+		waveform = simple_amfm(centers[0],amplitudes[0],note).run()
 
 		for i in range(1,len(centers)):
-			wf = simple_partial(centers[i],amplitudes[i],note).run()
+			wf = simple_amfm(centers[i],amplitudes[i],note).run()
 
 			waveform += wf
 
